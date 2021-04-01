@@ -79,4 +79,46 @@ public class Dao {
 		}
 		return false;
 	}
+
+	public boolean checkAdmin(String email, String password) {
+		
+		try {
+			ResultSet rs=st.executeQuery("select * from admin where email='"+email+"' and password='"+password+"'");
+			if(rs.next())
+				return true;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return false;
+	}
+
+	public boolean changeAdminPassword(String email, String password) {
+
+		try {
+			ResultSet rs=st.executeQuery("select * from admin where email='"+email+"'");
+			if(!rs.next()) {
+				return false;
+			}
+			st.execute("update admin set password='"+password+"' where email='"+email+"'");
+			return true;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return false;
+	}
+
+	public boolean insertFlight(HashMap<String, String> flight) {
+		String query1="insert into flights(name,from,to,date,time,price) ";
+		String query2="values('"+flight.get("name")+"','"+flight.get("from")+"','"+flight.get("to")+"','"+flight.get("date")+"','"+flight.get("time")+"','"+flight.get("price")+"')";
+		try {
+			st.execute(query1+query2);
+			return true;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return false;
+	}
 }
